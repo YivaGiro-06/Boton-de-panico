@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte e Investigación de Eventos · Itagüí · SST 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f5f4;--panel:#fff;--ink:#0a0a0a;--ink-2:#171717;--ink-3:#262626;
+  --muted:#737373;--muted-2:#a3a3a3;--line:#e7e5e4;--line-2:#d6d3d1;
+  --dark-900:#0a0a0a;--dark-800:#171717;--dark-700:#262626;
+  --orange:#f97316;--orange-dk:#ea580c;--orange-lt:#fed7aa;
+  --amber:#fbbf24;--amber-dk:#d97706;
+  --green:#16a34a;--green-dk:#15803d;
+  --red:#dc2626;--red-dk:#991b1b;--red-lt:#fee2e2;
+  --blue:#3b82f6;--blue-dk:#1e40af;--sky:#0ea5e9;
+  --purple:#8b5cf6;--purple-dk:#6d28d9;
+  --slate:#64748b;
+  --radius:12px;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 14px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 30px rgba(0,0,0,.10);
+  --shadow-xl:0 25px 50px rgba(0,0,0,.18);
+  
+  /* RACI colors */
+  --r-color:#f97316;    /* R - Responsable */
+  --a-color:#dc2626;    /* A - Accountable */
+  --c-color:#3b82f6;    /* C - Consultado */
+  --i-color:#94a3b8;    /* I - Informado */
+  
+  /* Swim lane colors */
+  --lane-colaborador:#ea580c;
+  --lane-lider-sst:#facc15;
+  --lane-supervisor:#dc2626;
+  --lane-medico:#0ea5e9;
+  --lane-coord:#2563eb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.tabular{font-variant-numeric:tabular-nums}
+
+/* === HEADER === */
+.header{background:#0a0a0a;color:#fff;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:3px solid var(--red)}
+.header-left{display:flex;align-items:center;gap:14px;min-width:0}
+.header-icon{width:46px;height:46px;border-radius:9px;background:linear-gradient(135deg,#ef4444,#991b1b);display:grid;place-items:center;flex-shrink:0;box-shadow:0 4px 14px rgba(220,38,38,.45)}
+.header-icon svg{width:24px;height:24px;color:#fff}
+.header h1{font-size:20px;font-weight:800;letter-spacing:-.3px;line-height:1.2;color:#fff}
+.header .sub{font-size:12.5px;color:#a3a3a3;font-weight:500;margin-top:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.header .sub b{color:#fff;font-weight:600;background:rgba(255,255,255,.08);padding:1px 8px;border-radius:5px;font-size:11px}
+.badge-pill{background:var(--red);color:#fff;font-weight:700;font-size:13.5px;padding:8px 16px;border-radius:999px;box-shadow:0 0 0 3px rgba(220,38,38,.22);animation:pulse-red 2s infinite}
+@keyframes pulse-red{0%,100%{box-shadow:0 0 0 3px rgba(220,38,38,.22)}50%{box-shadow:0 0 0 9px rgba(220,38,38,.0)}}
+.badge-corner{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;padding:8px 14px;border-radius:7px;font-weight:600;font-size:13px}
+
+/* === TABS === */
+.tabs{background:#0a0a0a;padding:0 32px;display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid #1f1f1f}
+.tab{color:#a3a3a3;background:none;border:none;cursor:pointer;padding:13px 16px;font-family:inherit;font-size:12.5px;font-weight:600;position:relative;white-space:nowrap;display:flex;align-items:center;gap:7px;transition:color .15s}
+.tab svg{width:15px;height:15px;opacity:.7}
+.tab:hover{color:#fff}.tab:hover svg{opacity:1}
+.tab.active{color:#fff}.tab.active svg{color:var(--red);opacity:1}
+.tab.active::after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:3px;background:var(--red);border-radius:3px 3px 0 0}
+
+.main{padding:24px 32px;max-width:1700px;margin:0 auto}
+
+/* === HERO with RED BUTTON === */
+.hero{background:linear-gradient(135deg,#0a0a0a 0%,#171717 50%,#1a0a0a 100%);border-radius:18px;padding:48px 56px;margin-bottom:24px;position:relative;overflow:hidden;color:#fff;box-shadow:var(--shadow-lg)}
+.hero::before{content:"";position:absolute;top:-50%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(220,38,38,.18),transparent 70%);pointer-events:none}
+.hero::after{content:"";position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(249,115,22,.10),transparent 70%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;position:relative;z-index:1}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;text-align:center}}
+.hero h2{font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.hero h1{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:14px;color:#fff}
+.hero p{font-size:15px;color:#a3a3a3;line-height:1.6;max-width:580px;font-weight:500}
+.hero-meta{display:flex;gap:16px;margin-top:20px;flex-wrap:wrap}
+.hero-meta .mtag{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;color:#e5e5e5;display:flex;align-items:center;gap:8px}
+.hero-meta .mtag svg{width:14px;height:14px;color:var(--red)}
+
+/* THE RED BUTTON */
+.panic-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.panic-btn{
+  width:220px;height:220px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #ef4444 0%, #dc2626 40%, #991b1b 85%, #7f1d1d 100%);
+  border:6px solid #1a0505;
+  color:#fff;
+  font-family:inherit;
+  font-size:17px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  cursor:pointer;
+  position:relative;
+  box-shadow:
+    inset 0 -8px 16px rgba(0,0,0,.4),
+    inset 0 8px 16px rgba(255,255,255,.15),
+    0 0 0 8px rgba(220,38,38,.18),
+    0 0 0 16px rgba(220,38,38,.10),
+    0 12px 40px rgba(220,38,38,.5),
+    0 4px 14px rgba(0,0,0,.4);
+  text-shadow:0 2px 4px rgba(0,0,0,.4);
+  transition:all .1s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  animation:pulse-panic 1.8s infinite;
+}
+@keyframes pulse-panic{
+  0%,100%{box-shadow:inset 0 -8px 16px rgba(0,0,0,.4),inset 0 8px 16px rgba(255,255,255,.15),0 0 0 8px rgba(220,38,38,.18),0 0 0 16px rgba(220,38,38,.10),0 12px 40px rgba(220,38,38,.5),0 4px 14px rgba(0,0,0,.4)}
+  50%{box-shadow:inset 0 -8px 16px rgba(0,0,0,.4),inset 0 8px 16px rgba(255,255,255,.15),0 0 0 14px rgba(220,38,38,.28),0 0 0 28px rgba(220,38,38,.15),0 12px 50px rgba(220,38,38,.7),0 4px 14px rgba(0,0,0,.4)}
+}
+.panic-btn:hover{transform:scale(1.03)}
+.panic-btn:active{
+  transform:scale(.96);
+  box-shadow:
+    inset 0 8px 20px rgba(0,0,0,.5),
+    inset 0 -2px 8px rgba(255,255,255,.05),
+    0 0 0 8px rgba(220,38,38,.18),
+    0 6px 20px rgba(220,38,38,.5);
+  animation:none;
+}
+.panic-btn svg{width:48px;height:48px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.panic-btn .label{display:block;line-height:1.1}
+.panic-btn .sublabel{font-size:11px;font-weight:600;opacity:.85;letter-spacing:.5px;margin-top:2px}
+.panic-hint{font-size:11px;color:#737373;text-align:center;font-weight:500;max-width:240px;line-height:1.4}
+
+/* === KPIs === */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:14px;margin-bottom:22px}
+.kpi{background:var(--panel);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);position:relative;overflow:hidden;border-left:4px solid var(--red);transition:transform .2s,box-shadow .2s;cursor:pointer}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.kpi.amber{border-left-color:var(--amber)}
+.kpi.dark{border-left-color:var(--dark-800)}
+.kpi.green{border-left-color:var(--green)}
+.kpi.blue{border-left-color:var(--blue)}
+.kpi.orange{border-left-color:var(--orange)}
+.kpi-val{font-size:32px;font-weight:800;letter-spacing:-1.5px;line-height:1;color:var(--ink)}
+.kpi.red .kpi-val{color:var(--red)}
+.kpi.amber .kpi-val{color:var(--amber-dk)}
+.kpi.dark .kpi-val{color:var(--dark-800)}
+.kpi.green .kpi-val{color:var(--green-dk)}
+.kpi.blue .kpi-val{color:var(--blue-dk)}
+.kpi.orange .kpi-val{color:var(--orange-dk)}
+.kpi-label{font-size:12.5px;font-weight:700;color:var(--ink-2);margin-top:9px}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:3px;font-weight:500}
+.kpi::after{content:"→";position:absolute;top:12px;right:16px;font-size:16px;font-weight:700;color:var(--muted-2);opacity:0;transition:opacity .2s,transform .2s,color .2s}
+.kpi:hover::after{opacity:1;transform:translateX(2px);color:var(--red)}
+button.kpi{text-align:left;font:inherit;color:inherit;width:100%;background:var(--panel);border:none;border-left:4px solid var(--red)}
+
+/* === PANELS === */
+.panel{background:var(--panel);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow)}
+.panel + .panel{margin-top:18px}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.panel-title{font-size:11.5px;font-weight:700;letter-spacing:.8px;color:var(--ink-2);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.panel-title::before{content:"";width:3px;height:14px;background:var(--red);border-radius:2px}
+.panel-desc{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500;text-transform:none;letter-spacing:0;padding-left:11px}
+
+.grid-2{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}
+.grid-2-equal{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media (max-width:1100px){.grid-2,.grid-2-equal,.grid-3{grid-template-columns:1fr}}
+
+.tab-content{display:none;animation:fadeIn .25s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* === MANUAL BOX === */
+.reglas-box{background:#fff;border-radius:10px;padding:14px 18px;box-shadow:var(--shadow);margin-bottom:18px;border-left:4px solid var(--amber)}
+.reglas-box h3{font-size:11.5px;font-weight:800;color:var(--amber-dk);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.reglas-box .reglas{display:flex;flex-wrap:wrap;gap:14px}
+.reglas-box .regla{font-size:12.5px;color:var(--ink-2);font-weight:500}
+.reglas-box .regla b{color:var(--ink);font-weight:700}
+
+/* === RACI MATRIX === */
+.raci-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line)}
+.raci-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;min-width:1100px}
+.raci-tbl th{background:#171717;color:#e5e5e5;font-weight:700;font-size:11px;letter-spacing:.5px;text-transform:uppercase;padding:14px 10px;text-align:center;border-bottom:1px solid #262626;vertical-align:bottom;cursor:pointer;transition:background .15s}
+.raci-tbl th:hover{background:#262626;color:#fff}
+.raci-tbl th.role-header{min-width:90px;writing-mode:horizontal-tb;line-height:1.2}
+.raci-tbl th.role-header.active{background:var(--red);color:#fff}
+.raci-tbl th.actividad-col{text-align:left;background:#0a0a0a;min-width:340px;cursor:default;padding-left:18px}
+.raci-tbl th.item-col{width:46px;padding:14px 6px}
+.raci-tbl td{padding:12px 10px;text-align:center;border-bottom:1px solid var(--line);background:#fff;transition:background .15s}
+.raci-tbl tr:hover td{background:#fafaf9}
+.raci-tbl tr.highlight td{background:#fff7ed !important}
+.raci-tbl td.actividad{text-align:left;font-weight:600;color:var(--ink);padding-left:18px;font-size:12.5px;line-height:1.4}
+.raci-tbl td.item-cell{font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--muted);font-size:13px}
+.raci-tbl tr:last-child td{border-bottom:none}
+.raci-pill{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-weight:800;font-size:13px;color:#fff;font-family:'JetBrains Mono',monospace;box-shadow:0 2px 6px rgba(0,0,0,.12);transition:transform .15s}
+.raci-pill.R{background:var(--r-color)}
+.raci-pill.A{background:var(--a-color)}
+.raci-pill.C{background:var(--c-color)}
+.raci-pill.I{background:var(--i-color);opacity:.55}
+.raci-tbl tr.highlight .raci-pill{transform:scale(1.12)}
+.raci-tbl tr.highlight .raci-pill.I{opacity:1}
+.raci-legend{display:flex;flex-wrap:wrap;gap:14px;padding:14px 18px;background:#fafaf9;border-radius:8px;margin-bottom:14px;border:1px solid var(--line)}
+.raci-legend-item{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+
+/* === FLUJOGRAMA === */
+.flow-container{display:flex;flex-direction:column;gap:8px;padding:8px}
+.flow-step{display:flex;align-items:stretch;gap:0;position:relative}
+.flow-arrow{display:flex;justify-content:center;padding:8px 0}
+.flow-arrow svg{width:24px;height:24px;color:var(--muted-2)}
+.flow-card{flex:1;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:16px;border-left:5px solid var(--slate);position:relative;transition:transform .15s,box-shadow .15s}
+.flow-card:hover{transform:translateX(2px);box-shadow:var(--shadow-lg)}
+.flow-card.start{background:linear-gradient(135deg,#0a0a0a,#171717);color:#fff;border-left-color:var(--green);border-radius:999px;justify-content:center;text-align:center;padding:14px 32px;font-weight:800;font-size:15px;letter-spacing:1px}
+.flow-card.end{background:linear-gradient(135deg,#0a0a0a,#171717);color:#fff;border-left-color:var(--red);border-radius:999px;justify-content:center;text-align:center;padding:14px 32px;font-weight:800;font-size:15px;letter-spacing:1px}
+.flow-card.decision{border-left-color:var(--amber);background:linear-gradient(135deg,#fffbeb,#fff);border-radius:12px}
+.flow-card.decision .flow-text{font-weight:700;color:var(--amber-dk);font-size:14px}
+.flow-card.critical{border-left-color:var(--red);background:linear-gradient(135deg,#fef2f2,#fff)}
+.flow-num{flex-shrink:0;width:40px;height:40px;border-radius:10px;background:var(--ink-2);color:#fff;display:grid;place-items:center;font-weight:800;font-family:'JetBrains Mono',monospace;font-size:14px}
+.flow-text{flex:1;font-size:13.5px;color:var(--ink-2);line-height:1.5;font-weight:500}
+.flow-text strong{color:var(--ink);font-weight:700}
+.flow-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;min-width:120px}
+.lane-tag{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:5px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.lane-tag::before{content:"";width:7px;height:7px;border-radius:50%}
+.lane-colaborador{background:#ffedd5;color:#7c2d12}
+.lane-colaborador::before{background:var(--lane-colaborador)}
+.lane-lider-sst{background:#fef3c7;color:#78350f}
+.lane-lider-sst::before{background:var(--lane-lider-sst)}
+.lane-supervisor{background:#fee2e2;color:#7f1d1d}
+.lane-supervisor::before{background:var(--lane-supervisor)}
+.lane-medico{background:#e0f2fe;color:#075985}
+.lane-medico::before{background:var(--lane-medico)}
+.lane-coord{background:#dbeafe;color:#1e40af}
+.lane-coord::before{background:var(--lane-coord)}
+.time-tag{font-size:10.5px;font-weight:800;color:var(--red);background:#fee2e2;padding:3px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace}
+.flow-branch{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 24px}
+.flow-branch-arm{display:flex;flex-direction:column;gap:8px;position:relative;padding-top:8px}
+.flow-branch-arm::before{content:attr(data-label);position:absolute;top:-4px;left:50%;transform:translateX(-50%);background:#0a0a0a;color:#fff;font-weight:800;font-size:11px;padding:2px 12px;border-radius:5px;letter-spacing:1px;z-index:1}
+.flow-branch-arm.si::before{background:var(--green-dk)}
+.flow-branch-arm.no::before{background:var(--red-dk)}
+@media (max-width:900px){.flow-branch{grid-template-columns:1fr}}
+
+/* === TIMELINE === */
+.timeline{position:relative;padding-left:60px;padding-top:10px}
+.timeline::before{content:"";position:absolute;left:24px;top:20px;bottom:20px;width:3px;background:linear-gradient(to bottom,var(--red),var(--orange),var(--amber),var(--green));border-radius:2px}
+.timeline-item{position:relative;padding:18px 24px;background:#fff;border-radius:12px;box-shadow:var(--shadow);margin-bottom:18px;border-left:5px solid var(--red)}
+.timeline-item.t-1h{border-left-color:var(--red)}
+.timeline-item.t-24h{border-left-color:var(--orange)}
+.timeline-item.t-7d{border-left-color:var(--amber)}
+.timeline-item.t-final{border-left-color:var(--green)}
+.timeline-dot{position:absolute;left:-44px;top:22px;width:44px;height:44px;border-radius:50%;background:#fff;border:4px solid var(--red);display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:12px;color:var(--red);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.timeline-item.t-24h .timeline-dot{border-color:var(--orange);color:var(--orange-dk)}
+.timeline-item.t-7d .timeline-dot{border-color:var(--amber);color:var(--amber-dk)}
+.timeline-item.t-final .timeline-dot{border-color:var(--green);color:var(--green-dk)}
+.timeline-item h4{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.timeline-item p{font-size:13px;color:var(--ink-2);line-height:1.5;font-weight:500}
+.timeline-item .tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.timeline-item .tags .lane-tag{font-size:10px}
+
+/* === ROLES CARDS === */
+.role-card{background:#fff;border-radius:12px;padding:20px 22px;box-shadow:var(--shadow);border-top:4px solid var(--orange);transition:transform .15s,box-shadow .15s}
+.role-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.role-card h4{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.role-card h4::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--orange)}
+.role-card .role-cargo{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:14px;text-transform:uppercase;letter-spacing:.4px}
+.role-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.role-stat{text-align:center;padding:8px;border-radius:8px;background:#fafaf9}
+.role-stat .v{font-size:18px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
+.role-stat .l{font-size:9.5px;color:var(--muted);font-weight:700;margin-top:4px;text-transform:uppercase;letter-spacing:.4px}
+.role-stat.R .v{color:var(--r-color)}
+.role-stat.A .v{color:var(--a-color)}
+.role-stat.C .v{color:var(--c-color)}
+.role-stat.I .v{color:var(--i-color)}
+.role-activities{font-size:11.5px;color:var(--ink-2);line-height:1.5}
+.role-activities ul{padding-left:18px;margin-top:6px}
+.role-activities li{margin-bottom:3px}
+.role-activities li b{font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted)}
+
+/* === MODAL === */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,10,10,.7);z-index:9998;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-bg.active{display:flex;animation:fadeBg .2s}
+@keyframes fadeBg{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:16px;max-width:680px;width:100%;max-height:90vh;overflow:auto;box-shadow:var(--shadow-xl);animation:slideUp .25s}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff;padding:24px 28px;border-radius:16px 16px 0 0;position:sticky;top:0;display:flex;align-items:center;gap:14px;z-index:1}
+.modal-header .icon{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;flex-shrink:0;animation:pulse-icon 1.5s infinite}
+@keyframes pulse-icon{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.4)}50%{box-shadow:0 0 0 12px rgba(255,255,255,0)}}
+.modal-header .icon svg{width:26px;height:26px;color:#fff}
+.modal-header h2{font-size:18px;font-weight:800;letter-spacing:-.3px;flex:1}
+.modal-header .sub-h{font-size:12px;font-weight:600;opacity:.9;margin-top:2px}
+.modal-header .close{margin-left:auto;background:rgba(255,255,255,.15);border:none;color:#fff;width:36px;height:36px;border-radius:9px;cursor:pointer;font-size:22px;display:grid;place-items:center;transition:background .15s}
+.modal-header .close:hover{background:rgba(255,255,255,.28)}
+.modal-body{padding:24px 28px}
+.modal-step{padding:16px 18px;background:#fafaf9;border-radius:10px;border-left:4px solid var(--red);margin-bottom:12px;display:flex;gap:14px}
+.modal-step .n{width:30px;height:30px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.modal-step .c{flex:1}
+.modal-step h5{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.modal-step p{font-size:12px;color:var(--ink-2);line-height:1.5}
+.modal-step .time{font-size:10.5px;font-weight:800;color:var(--red);background:#fee2e2;padding:2px 8px;border-radius:4px;margin-top:4px;display:inline-block;font-family:'JetBrains Mono',monospace}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.contact-card{padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:10px}
+.contact-card h6{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.contact-card .val{font-size:13px;font-weight:700;color:var(--ink);font-family:'JetBrains Mono',monospace}
+
+/* === ALERT === */
+.alert{background:linear-gradient(95deg,#fef2f2,#fff7ed);border-left:5px solid var(--red);border-radius:var(--radius);padding:16px 22px;margin-bottom:22px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow)}
+.alert .icon{width:42px;height:42px;border-radius:50%;background:#fee2e2;color:var(--red);display:grid;place-items:center;flex-shrink:0}
+.alert .icon svg{width:22px;height:22px}
+.alert h3{font-size:14px;font-weight:800;color:var(--red-dk)}
+.alert p{font-size:12.5px;color:var(--ink-2);margin-top:2px;font-weight:500}
+.alert p b{color:var(--red-dk)}
+
+.footer{padding:24px 32px;text-align:center;color:var(--muted);font-size:11.5px;font-weight:500;border-top:1px solid var(--line)}
+
+/* HALLAZGOS */
+.hallazgo{padding:14px 16px;border-radius:10px;border-left:4px solid var(--green);background:linear-gradient(135deg,#f0fdf4,#fff);box-shadow:var(--shadow);margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}
+.hallazgo.amber{border-left-color:var(--amber);background:linear-gradient(135deg,#fffbeb,#fff)}
+.hallazgo.red{border-left-color:var(--red);background:linear-gradient(135deg,#fef2f2,#fff)}
+.hallazgo .h-icon{width:34px;height:34px;border-radius:8px;background:#dcfce7;color:var(--green-dk);display:grid;place-items:center;flex-shrink:0}
+.hallazgo.amber .h-icon{background:#fef3c7;color:var(--amber-dk)}
+.hallazgo.red .h-icon{background:#fee2e2;color:var(--red)}
+.hallazgo .h-icon svg{width:18px;height:18px}
+.hallazgo h5{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:2px}
+.hallazgo p{font-size:12px;color:var(--ink-2);line-height:1.5}
+
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <div>
+      <h1>Reporte e Investigación de Eventos · CD Itagüí</h1>
+      <div class="sub">
+        <span>Versión 6 · 26 Feb 2026</span>
+        <span>·</span>
+        <b>Danis Acosta · Gerente Nacional SST LIS</b>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="badge-pill">🚨 PROCEDIMIENTO CRÍTICO</div>
+    <div class="badge-corner">SST · Itagüí 2026</div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="general"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Vista General</button>
+  <button class="tab" data-tab="flujograma"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Flujograma</button>
+  <button class="tab" data-tab="raci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>Matriz RACI</button>
+  <button class="tab" data-tab="tiempos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Tiempos Críticos</button>
+  <button class="tab" data-tab="roles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Roles</button>
+</nav>
+
+<main class="main">
+
+  <!-- HERO con BOTÓN ROJO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <h2>⚠️ Sistema de respuesta inmediata</h2>
+        <h1>Protocolo de reporte e investigación de eventos</h1>
+        <p>Procedimiento oficial para reportar, gestionar e investigar incidentes y accidentes laborales en el Centro de Distribución Itagüí. Activa el botón cuando ocurra un evento que requiera respuesta inmediata.</p>
+        <div class="hero-meta">
+          <div class="mtag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Primer reporte ≤ 1 hora</div>
+          <div class="mtag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg> Notificación ≤ 24 horas</div>
+          <div class="mtag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Investigación ≤ 7 días</div>
+        </div>
+      </div>
+      <div class="panic-wrap">
+        <button class="panic-btn" onclick="openPanicModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span class="label">REPORTAR<br>EVENTO</span>
+          <span class="sublabel">PRESIONAR EN EMERGENCIA</span>
+        </button>
+        <div class="panic-hint">Click para iniciar el protocolo de reporte inmediato</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="reglas-box">
+    <h3>📖 Cómo leer este dashboard</h3>
+    <div class="reglas">
+      <span class="regla">🔴 <b>Botón rojo</b> arriba: abre la guía paso a paso para reportar un evento</span>
+      <span class="regla">📊 <b>5 pestañas:</b> Vista General · Flujograma · Matriz RACI · Tiempos Críticos · Roles</span>
+      <span class="regla">🎯 <b>Matriz RACI:</b> click en un rol para resaltar todas sus responsabilidades</span>
+      <span class="regla">🎨 <b>R</b>=Responsable · <b>A</b>=Dueño · <b>C</b>=Consultado · <b>I</b>=Informado</span>
+    </div>
+  </div>
+
+  <section class="kpi-row" id="kpi-row"></section>
+
+  <!-- VISTA GENERAL -->
+  <section class="tab-content active" data-tab="general">
+    <div class="panel">
+      <div class="panel-head"><div>
+        <div class="panel-title">📋 Historial de versiones del documento</div>
+        <div class="panel-desc">Trazabilidad de cambios desde 2022</div>
+      </div></div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="background:#171717;color:#e5e5e5">
+          <th style="padding:10px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px">Versión</th>
+          <th style="padding:10px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px">Responsable</th>
+          <th style="padding:10px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px">Cargo</th>
+          <th style="padding:10px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px">Descripción</th>
+          <th style="padding:10px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px">Fecha</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-weight:700">v1</td><td style="padding:10px 14px;border-bottom:1px solid var(--line)">Sindi Hernández</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-size:11.5px;color:var(--muted)">Safety supervisor SST</td><td style="padding:10px 14px;border-bottom:1px solid var(--line)">Creación del documento</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace">2022-05-18</td></tr>
+          <tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-weight:700">v2</td><td style="padding:10px 14px;border-bottom:1px solid var(--line)">Sindi Hernández</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-size:11.5px;color:var(--muted)">Safety supervisor SST</td><td style="padding:10px 14px;border-bottom:1px solid var(--line)">Revisión y actualización del flujograma</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace">2023-05-30</td></tr>
+          <tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-weight:700">v3</td><td style="padding:10px 14px;border-bottom:1px solid var(--line)">Stiven Zapata</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-size:11.5px;color:var(--muted)">Safety supervisor SST</td><td style="padding:10px 14px;border-bottom:1px solid var(--line)">Actualización del documento</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace">2023-11-28</td></tr>
+          <tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-weight:700">v4</td><td style="padding:10px 14px;border-bottom:1px solid var(--line)">Estiven Zapata</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-size:11.5px;color:var(--muted)">Safety supervisor SST</td><td style="padding:10px 14px;border-bottom:1px solid var(--line)">Actualización del plan de tráfico del CD</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace">2024-03-06</td></tr>
+          <tr><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-weight:700">v5</td><td style="padding:10px 14px;border-bottom:1px solid var(--line)">Estiven Zapata</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-size:11.5px;color:var(--muted)">Safety supervisor SST</td><td style="padding:10px 14px;border-bottom:1px solid var(--line)">Actualización de RACI y flujograma</td><td style="padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace">2025-03-06</td></tr>
+          <tr style="background:#fef2f2"><td style="padding:12px 14px;font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--red)">v6 ✓</td><td style="padding:12px 14px;font-weight:700">Danis Acosta</td><td style="padding:12px 14px;font-size:11.5px;color:var(--red-dk);font-weight:600">Gerente Nacional SST LIS</td><td style="padding:12px 14px;font-weight:600"><b>Actualización flujograma y RACI · Integración médico laboral</b></td><td style="padding:12px 14px;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red-dk)">2026-02-26</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2-equal" style="margin-top:18px">
+      <div class="panel">
+        <div class="panel-head"><div>
+          <div class="panel-title">✅ Fortalezas del procedimiento</div>
+          <div class="panel-desc">Aspectos positivos identificados</div>
+        </div></div>
+        <div class="hallazgo">
+          <div class="h-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div><h5>Tiempos críticos bien definidos</h5><p>Establece 3 plazos claros: ≤1h primer reporte, ≤24h notificación, ≤7d investigación</p></div>
+        </div>
+        <div class="hallazgo">
+          <div class="h-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div><h5>Matriz RACI completa</h5><p>13 actividades con responsabilidades asignadas a 9 roles distintos</p></div>
+        </div>
+        <div class="hallazgo">
+          <div class="h-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div><h5>Integración médico laboral (v6)</h5><p>La versión más reciente incorpora rol de médico laboral en clasificación de severidad y tratamiento</p></div>
+        </div>
+        <div class="hallazgo">
+          <div class="h-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div><h5>Mantenimiento activo del documento</h5><p>6 versiones desde 2022, con actualizaciones anuales · Última hace ~3 meses</p></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><div>
+          <div class="panel-title">⚠️ Recomendaciones para auditoría</div>
+          <div class="panel-desc">Aspectos a validar o mejorar</div>
+        </div></div>
+        <div class="hallazgo amber">
+          <div class="h-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <div><h5>Verificar tiempos reales vs. estándar</h5><p>Validar histórico de eventos: ¿se cumplen los plazos de 1h, 24h y 7d?</p></div>
+        </div>
+        <div class="hallazgo amber">
+          <div class="h-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <div><h5>Solicitar trazabilidad de Credit 360°</h5><p>El procedimiento requiere registro inicial y actualización periódica · validar reportes activos</p></div>
+        </div>
+        <div class="hallazgo amber">
+          <div class="h-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <div><h5>Validar cobertura de brigadistas</h5><p>El protocolo depende de brigadistas activos · cruzar con dashboard de brigadistas vigentes</p></div>
+        </div>
+        <div class="hallazgo amber">
+          <div class="h-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <div><h5>Verificar divulgación a colaboradores</h5><p>El colaborador es "A" (dueño) en reporte del evento · solicitar evidencia de capacitación</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLUJOGRAMA -->
+  <section class="tab-content" data-tab="flujograma">
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">🔄 Flujo del procedimiento · Visual</div>
+          <div class="panel-desc">Reconstrucción interactiva del flujograma oficial v6 con carriles por rol</div>
+        </div>
+      </div>
+
+      <div style="background:#fafaf9;padding:14px 18px;border-radius:10px;margin-bottom:18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        <span style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Carriles:</span>
+        <span class="lane-tag lane-colaborador">Colaborador</span>
+        <span class="lane-tag lane-lider-sst">Líder SST</span>
+        <span class="lane-tag lane-supervisor">Supervisor ABI Safety</span>
+        <span class="lane-tag lane-medico">Médico Laboral</span>
+        <span class="lane-tag lane-coord">Coordinador de reparto</span>
+      </div>
+
+      <div class="flow-container">
+        <div class="flow-card start">▶ INICIO · MATERIALIZACIÓN DEL EVENTO</div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+        <div class="flow-card decision">
+          <div class="flow-num">1</div>
+          <div class="flow-text"><strong>¿Hay trabajadores lesionados o afectados?</strong></div>
+          <div class="flow-meta"><span class="lane-tag lane-colaborador">Colaborador</span></div>
+        </div>
+
+        <div class="flow-branch">
+          <div class="flow-branch-arm si" data-label="SI">
+            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="flow-card decision">
+              <div class="flow-num">2</div>
+              <div class="flow-text"><strong>¿Está en peligro la vida o la integridad del trabajador?</strong></div>
+              <div class="flow-meta"><span class="lane-tag lane-colaborador">Colaborador</span></div>
+            </div>
+            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="flow-card critical">
+              <div class="flow-num">3</div>
+              <div class="flow-text">Se realiza <strong>atención por brigadistas o médico laboral</strong> · Identificación de afectación · Coordinar con reparto/flota</div>
+              <div class="flow-meta">
+                <span class="lane-tag lane-medico">Médico Laboral</span>
+                <span class="lane-tag lane-coord">Coord. reparto</span>
+              </div>
+            </div>
+            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="flow-card critical">
+              <div class="flow-num">4</div>
+              <div class="flow-text">Si <strong>requiere valoración externa</strong>: traslado para verificación de Dx · Desplazamiento a <strong>IPS más cercano</strong></div>
+              <div class="flow-meta"><span class="lane-tag lane-medico">Médico Laboral</span></div>
+            </div>
+          </div>
+          <div class="flow-branch-arm no" data-label="NO">
+            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="flow-card">
+              <div class="flow-num">5</div>
+              <div class="flow-text">El lesionado o testigos <strong>reportan el evento</strong> al coordinador de reparto y/o personal SST</div>
+              <div class="flow-meta"><span class="lane-tag lane-colaborador">Colaborador</span></div>
+            </div>
+            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="flow-card">
+              <div class="flow-num">6</div>
+              <div class="flow-text">Si es el área de operaciones la que recibe: <strong>reportar al área de SST y asegurar la zona</strong> donde se encuentra el trabajador</div>
+              <div class="flow-meta"><span class="lane-tag lane-coord">Coord. reparto</span></div>
+            </div>
+            <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="flow-card">
+              <div class="flow-num">7</div>
+              <div class="flow-text">SST <strong>contacta al médico laboral</strong> para identificación primaria (presencial o teleconsulta)</div>
+              <div class="flow-meta"><span class="lane-tag lane-lider-sst">Líder SST</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="flow-card critical">
+          <div class="flow-num">8</div>
+          <div class="flow-text"><strong>Registro y reporte del evento</strong> al Supervisor Safety del CD</div>
+          <div class="flow-meta">
+            <span class="lane-tag lane-supervisor">Supervisor ABI Safety</span>
+            <span class="time-tag">≤ 1 HORA</span>
+          </div>
+        </div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="flow-card critical">
+          <div class="flow-num">9</div>
+          <div class="flow-text"><strong>Notificación del evento por CORREO + Safety Alert</strong><br>Despliegue BU COLOMBIA · <span class="mono" style="font-size:11.5px;color:var(--red-dk)">safetyalertsBUCOL@ab-inbev.com</span></div>
+          <div class="flow-meta">
+            <span class="lane-tag lane-supervisor">Supervisor ABI Safety</span>
+            <span class="time-tag">≤ 24 HORAS</span>
+          </div>
+        </div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="flow-card">
+          <div class="flow-num">10</div>
+          <div class="flow-text"><strong>Registrar información inicial en Credit 360°</strong> · Realizar <strong>Hard Stop</strong> con divulgación del evento al frontline</div>
+          <div class="flow-meta"><span class="lane-tag lane-supervisor">Supervisor ABI Safety</span></div>
+        </div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="flow-card critical">
+          <div class="flow-num">11</div>
+          <div class="flow-text"><strong>Investigación completa</strong> con planes de acción</div>
+          <div class="flow-meta">
+            <span class="lane-tag lane-supervisor">Supervisor ABI Safety</span>
+            <span class="time-tag">≤ 7 DÍAS</span>
+          </div>
+        </div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="flow-card">
+          <div class="flow-num">12</div>
+          <div class="flow-text"><strong>Finalizar ejecución de acciones</strong> · Cargar información en Credit 360 · Alimentar periódicamente</div>
+          <div class="flow-meta"><span class="lane-tag lane-supervisor">Supervisor ABI Safety</span></div>
+        </div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="flow-card end">■ FIN · CIERRE DEL EVENTO</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RACI MATRIX -->
+  <section class="tab-content" data-tab="raci">
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">📊 Matriz RACI · 13 actividades × 9 roles</div>
+          <div class="panel-desc">Click en un rol (cabecera) para resaltar sus responsabilidades</div>
+        </div>
+      </div>
+
+      <div class="raci-legend">
+        <div class="raci-legend-item"><span class="raci-pill R">R</span> Responsable de ejecutar</div>
+        <div class="raci-legend-item"><span class="raci-pill A">A</span> Dueño / Accountable</div>
+        <div class="raci-legend-item"><span class="raci-pill C">C</span> Consultado</div>
+        <div class="raci-legend-item"><span class="raci-pill I">I</span> Informado</div>
+      </div>
+
+      <div class="raci-wrap">
+        <table class="raci-tbl" id="raci-tbl">
+          <thead><tr id="raci-head"></tr></thead>
+          <tbody id="raci-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIEMPOS CRÍTICOS -->
+  <section class="tab-content" data-tab="tiempos">
+    <div class="panel">
+      <div class="panel-head"><div>
+        <div class="panel-title">⏱️ Línea de tiempo crítica del evento</div>
+        <div class="panel-desc">Hitos obligatorios desde la materialización del evento</div>
+      </div></div>
+
+      <div class="timeline">
+        <div class="timeline-item t-1h">
+          <div class="timeline-dot">T+0</div>
+          <h4>Momento 0 · Materialización del evento</h4>
+          <p>Ocurre el incidente o accidente. Si hay <b>lesionados con peligro vital</b>: atención inmediata por brigadistas y/o médico laboral. Desplazamiento a IPS si requiere valoración externa.</p>
+          <div class="tags"><span class="lane-tag lane-colaborador">Colaborador</span><span class="lane-tag lane-medico">Médico Laboral</span></div>
+        </div>
+
+        <div class="timeline-item t-1h">
+          <div class="timeline-dot">≤1h</div>
+          <h4>Primer reporte · Plazo máximo 1 hora</h4>
+          <p><b>Registro y reporte del evento al Supervisor Safety</b> del centro de distribución. El lesionado o testigos reportan al coordinador de reparto y/o personal SST. El área receptora reporta a SST y asegura la zona.</p>
+          <div class="tags"><span class="lane-tag lane-supervisor">Supervisor ABI Safety</span><span class="lane-tag lane-coord">Coord. reparto</span></div>
+        </div>
+
+        <div class="timeline-item t-24h">
+          <div class="timeline-dot">≤24h</div>
+          <h4>Notificación oficial · Plazo máximo 24 horas</h4>
+          <p><b>Envío de notificación del evento</b> por CORREO + Safety Alert. <b>Despliegue BU COLOMBIA</b> al correo <span class="mono">safetyalertsBUCOL@ab-inbev.com</span>. <b>Registro inicial en Credit 360°</b> y realización del Hard Stop con divulgación al frontline.</p>
+          <div class="tags"><span class="lane-tag lane-supervisor">Supervisor ABI Safety</span></div>
+        </div>
+
+        <div class="timeline-item t-7d">
+          <div class="timeline-dot">≤7d</div>
+          <h4>Investigación completa · Plazo máximo 7 días</h4>
+          <p><b>Investigación completa del evento con planes de acción.</b> Análisis de causas raíz, identificación de factores contribuyentes, y definición de planes correctivos y preventivos.</p>
+          <div class="tags"><span class="lane-tag lane-supervisor">Supervisor ABI Safety</span></div>
+        </div>
+
+        <div class="timeline-item t-final">
+          <div class="timeline-dot">FIN</div>
+          <h4>Cierre y seguimiento periódico</h4>
+          <p><b>Ejecución de acciones</b> · Carga continua de información en Credit 360 · <b>Socialización de resultados</b> de la investigación a la organización · Alimentación periódica del sistema con avances.</p>
+          <div class="tags"><span class="lane-tag lane-supervisor">Supervisor ABI Safety</span><span class="lane-tag lane-lider-sst">Líder SST</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:18px">
+      <div class="panel-head"><div>
+        <div class="panel-title">📞 Contactos clave del protocolo</div>
+        <div class="panel-desc">Información de contacto para reportar eventos</div>
+      </div></div>
+      <div class="contact-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+        <div class="contact-card">
+          <h6>📧 Safety Alert BU Colombia</h6>
+          <div class="val">safetyalertsBUCOL@ab-inbev.com</div>
+        </div>
+        <div class="contact-card">
+          <h6>💻 Sistema de registro</h6>
+          <div class="val">Credit 360°</div>
+        </div>
+        <div class="contact-card">
+          <h6>⚡ Notificación obligatoria</h6>
+          <div class="val">Hard Stop al frontline</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROLES -->
+  <section class="tab-content" data-tab="roles">
+    <div class="panel">
+      <div class="panel-head"><div>
+        <div class="panel-title">👥 Roles y responsabilidades</div>
+        <div class="panel-desc">9 roles involucrados en el procedimiento · Click en una tarjeta para ver detalle de actividades</div>
+      </div></div>
+
+      <div class="grid-3" id="roles-grid"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- MODAL PANIC BUTTON -->
+<div class="modal-bg" id="panic-modal" onclick="if(event.target===this)closePanicModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div>
+        <h2>Protocolo de Reporte de Evento</h2>
+        <div class="sub-h">Sigue estos pasos en orden estricto</div>
+      </div>
+      <button class="close" onclick="closePanicModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:linear-gradient(95deg,#fef2f2,#fff7ed);border-left:4px solid var(--red);padding:14px 18px;border-radius:10px;margin-bottom:18px">
+        <p style="font-size:13px;color:var(--ink-2);font-weight:500;line-height:1.5"><b style="color:var(--red-dk)">⚠️ Si hay peligro inmediato:</b> primero atención del lesionado por brigadistas y/o médico laboral · Si requiere IPS, desplazamiento inmediato al centro médico más cercano.</p>
+      </div>
+
+      <div class="modal-step">
+        <div class="n">1</div>
+        <div class="c">
+          <h5>Reportar al coordinador o personal SST</h5>
+          <p>El lesionado o cualquier testigo del evento reporta inmediatamente al <b>coordinador de reparto</b> y/o <b>personal SST</b>.</p>
+          <span class="time">INMEDIATO</span>
+        </div>
+      </div>
+
+      <div class="modal-step">
+        <div class="n">2</div>
+        <div class="c">
+          <h5>Asegurar la zona</h5>
+          <p>El área de operaciones que recibe el reporte debe <b>reportar al área de SST y asegurar la zona</b> donde se encuentra el trabajador lesionado.</p>
+        </div>
+      </div>
+
+      <div class="modal-step">
+        <div class="n">3</div>
+        <div class="c">
+          <h5>Contactar Médico Laboral</h5>
+          <p>El área de SST contacta al médico laboral para <b>identificación primaria</b> (presencial o teleconsulta) y clasificación de severidad.</p>
+        </div>
+      </div>
+
+      <div class="modal-step">
+        <div class="n">4</div>
+        <div class="c">
+          <h5>Registrar al Supervisor Safety</h5>
+          <p><b>Registro y reporte del evento al Supervisor Safety</b> del CD en un plazo no mayor a 1 hora desde la materialización.</p>
+          <span class="time">≤ 1 HORA</span>
+        </div>
+      </div>
+
+      <div class="modal-step">
+        <div class="n">5</div>
+        <div class="c">
+          <h5>Notificación oficial 24h</h5>
+          <p>Envío de notificación por <b>CORREO + Safety Alert</b> · Despliegue BU COLOMBIA a <span class="mono" style="background:#fee2e2;padding:1px 6px;border-radius:4px;color:var(--red-dk);font-weight:700">safetyalertsBUCOL@ab-inbev.com</span> · Registrar en Credit 360° + Hard Stop al frontline.</p>
+          <span class="time">≤ 24 HORAS</span>
+        </div>
+      </div>
+
+      <div class="modal-step">
+        <div class="n">6</div>
+        <div class="c">
+          <h5>Investigación completa</h5>
+          <p>Investigación completa con planes de acción dentro de los <b>7 días</b> siguientes al evento.</p>
+          <span class="time">≤ 7 DÍAS</span>
+        </div>
+      </div>
+
+      <div class="modal-step">
+        <div class="n">7</div>
+        <div class="c">
+          <h5>Cierre y seguimiento</h5>
+          <p>Finalizar ejecución de acciones · Cargar información en Credit 360° · Continuar alimentación periódica del sistema · Socialización de resultados.</p>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:20px">
+        <button onclick="closePanicModal()" style="background:#171717;color:#fff;border:none;padding:12px 32px;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px">CERRAR PROTOCOLO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">Auditoría SST · Itagüí 2026 · Reporte e Investigación de Eventos v6 · Generado <span id="gen-date"></span></footer>
+
+<script id="dataPayload" type="application/json">{"roles":["Gerente ABI CD","Supervisor ABI Safety","Gerente CD LIS","Líder Safety Nacional LIS","Médico Laboral","Líder SST LIS","Coordinador de reparto LIS","Personal Brigadista","Colaborador"],"actividades":[{"item":1,"actividad":"CAPACITAR E IDENTIFICAR AL PERSONAL DE LA BRIGADA","roles":{"Gerente ABI CD":"I","Supervisor ABI Safety":"I","Gerente CD LIS":"I","Líder Safety Nacional LIS":"I","Médico Laboral":"R","Líder SST LIS":"A","Coordinador de reparto LIS":"I","Personal Brigadista":"R","Colaborador":"I"}},{"item":2,"actividad":"REPORTE DEL EVENTO","roles":{"Gerente ABI CD":"C","Supervisor ABI Safety":"R","Gerente CD LIS":"C","Líder Safety Nacional LIS":"C","Médico Laboral":"I","Líder SST LIS":"R","Coordinador de reparto LIS":"R","Personal Brigadista":"I","Colaborador":"A"}},{"item":3,"actividad":"ASEGURAR LA ZONA DONDE SE ENCUENTRA EL COLABORADOR LESIONADO","roles":{"Gerente ABI CD":"I","Supervisor ABI Safety":"I","Gerente CD LIS":"C","Líder Safety Nacional LIS":"I","Médico Laboral":"I","Líder SST LIS":"C","Coordinador de reparto LIS":"A","Personal Brigadista":"I","Colaborador":"I"}},{"item":4,"actividad":"CLASIFICACIÓN DE LA SEVERIDAD DE LA LESIÓN","roles":{"Gerente ABI CD":"I","Supervisor ABI Safety":"I","Gerente CD LIS":"I","Líder Safety Nacional LIS":"C","Médico Laboral":"A","Líder SST LIS":"I","Coordinador de reparto LIS":"I","Personal Brigadista":"I","Colaborador":"I"}},{"item":5,"actividad":"PRESTAR LOS PRIMEROS AUXILIOS","roles":{"Gerente ABI CD":"I","Supervisor ABI Safety":"I","Gerente CD LIS":"C","Líder Safety Nacional LIS":"I","Médico Laboral":"A","Líder SST LIS":"R","Coordinador de reparto LIS":"C","Personal Brigadista":"A","Colaborador":"I"}},{"item":6,"actividad":"TRATAMIENTO Y SEGUIMIENTO MEDICO","roles":{"Gerente ABI CD":"I","Supervisor ABI Safety":"I","Gerente CD LIS":"I","Líder Safety Nacional LIS":"C","Médico Laboral":"A","Líder SST LIS":"I","Coordinador de reparto LIS":"I","Personal Brigadista":"I","Colaborador":"I"}},{"item":7,"actividad":"CLASIFICACIÓN DEL TIPO DE EVENTO","roles":{"Gerente ABI CD":"C","Supervisor ABI Safety":"R","Gerente CD LIS":"I","Líder Safety Nacional LIS":"I","Médico Laboral":"I","Líder SST LIS":"I","Coordinador de reparto LIS":"I","Personal Brigadista":"I","Colaborador":"I"}},{"item":8,"actividad":"REPORTE 24 HORAS","roles":{"Gerente ABI CD":"I","Supervisor ABI Safety":"R","Gerente CD LIS":"I","Líder Safety Nacional LIS":"I","Médico Laboral":"I","Líder SST LIS":"A","Coordinador de reparto LIS":"I","Personal Brigadista":"I","Colaborador":"I"}},{"item":9,"actividad":"INVESTIGACIÓN COMPLETA (7 DÍAS)","roles":{"Gerente ABI CD":"C","Supervisor ABI Safety":"A","Gerente CD LIS":"I","Líder Safety Nacional LIS":"C","Médico Laboral":"I","Líder SST LIS":"R","Coordinador de reparto LIS":"I","Personal Brigadista":"I","Colaborador":"I"}},{"item":10,"actividad":"ALERTA DE SEGURIDAD (24 HORAS)","roles":{"Gerente ABI CD":"I","Supervisor ABI Safety":"A","Gerente CD LIS":"I","Líder Safety Nacional LIS":"I","Médico Laboral":"I","Líder SST LIS":"R","Coordinador de reparto LIS":"I","Personal Brigadista":"I","Colaborador":"I"}},{"item":11,"actividad":"EJECUCIÓN DE ACCIONES","roles":{"Gerente ABI CD":"I","Supervisor ABI Safety":"A","Gerente CD LIS":"R","Líder Safety Nacional LIS":"R","Médico Laboral":"I","Líder SST LIS":"R","Coordinador de reparto LIS":"R","Personal Brigadista":"I","Colaborador":"I"}},{"item":12,"actividad":"SOCIALIZACIÓN DE RESULTADO DE INVESTIGACIÓN","roles":{"Gerente ABI CD":"I","Supervisor ABI Safety":"A","Gerente CD LIS":"I","Líder Safety Nacional LIS":"R","Médico Laboral":"I","Líder SST LIS":"R","Coordinador de reparto LIS":"I","Personal Brigadista":"I","Colaborador":"I"}},{"item":13,"actividad":"INCUMPLIMIENTO CON LOS REPORTES","roles":{"Gerente ABI CD":"C","Supervisor ABI Safety":"R","Gerente CD LIS":"R","Líder Safety Nacional LIS":"I","Médico Laboral":"I","Líder SST LIS":"A","Coordinador de reparto LIS":"R","Personal Brigadista":"I","Colaborador":"R"}}]}</script>
+<script>
+const DATA = JSON.parse(document.getElementById('dataPayload').textContent);
+document.getElementById('gen-date').textContent = new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
+
+// Tabs
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b===btn));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.toggle('active', c.dataset.tab===btn.dataset.tab));
+  });
+});
+
+// Panic modal
+function openPanicModal(){
+  document.getElementById('panic-modal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closePanicModal(){
+  document.getElementById('panic-modal').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown', e=>{if(e.key==='Escape')closePanicModal();});
+
+// KPIs
+const kpis = [
+  { val: DATA.actividades.length, label:'Actividades RACI', sub:'Tareas del procedimiento', cls:'red', tab:'raci'},
+  { val: DATA.roles.length, label:'Roles involucrados', sub:'Áreas y posiciones', cls:'orange', tab:'roles'},
+  { val: '5', label:'Carriles del flujo', sub:'Áreas en el flujograma', cls:'amber', tab:'flujograma'},
+  { val: '3', label:'Tiempos críticos', sub:'1h · 24h · 7d', cls:'red', tab:'tiempos'},
+  { val: 'v6', label:'Versión actual', sub:'26-Feb-2026', cls:'dark', tab:'general'},
+  { val: '6', label:'Versiones totales', sub:'Desde 2022', cls:'green', tab:'general'},
+];
+const kpiRow = document.getElementById('kpi-row');
+kpiRow.innerHTML = kpis.map(k=>`<button class="kpi ${k.cls}" data-target="${k.tab}" type="button"><div class="kpi-val tabular">${k.val}</div><div class="kpi-label">${k.label}</div><div class="kpi-sub">${k.sub}</div></button>`).join('');
+kpiRow.addEventListener('click', e=>{
+  const c = e.target.closest('.kpi'); if (!c) return;
+  document.querySelector(`.tab[data-tab="${c.dataset.target}"]`)?.click();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+// === RACI MATRIX ===
+const head = document.getElementById('raci-head');
+head.innerHTML = `<th class="item-col">#</th><th class="actividad-col">Actividad</th>` + 
+  DATA.roles.map(r=>`<th class="role-header" data-role="${r}"><div style="line-height:1.15;font-size:10.5px">${r}</div></th>`).join('');
+
+const body = document.getElementById('raci-body');
+body.innerHTML = DATA.actividades.map(a=>`
+  <tr data-item="${a.item}">
+    <td class="item-cell">${a.item}</td>
+    <td class="actividad">${a.actividad}</td>
+    ${DATA.roles.map(r=>{
+      const v = a.roles[r] || '';
+      return `<td>${v?`<span class="raci-pill ${v}">${v}</span>`:''}</td>`;
+    }).join('')}
+  </tr>
+`).join('');
+
+// Click on role header → highlight
+document.querySelectorAll('.role-header').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const role = th.dataset.role;
+    const isActive = th.classList.contains('active');
+    document.querySelectorAll('.role-header').forEach(h=>h.classList.remove('active'));
+    document.querySelectorAll('#raci-body tr').forEach(tr=>tr.classList.remove('highlight'));
+    if (!isActive) {
+      th.classList.add('active');
+      DATA.actividades.forEach(a=>{
+        if (a.roles[role]) {
+          const row = document.querySelector(`#raci-body tr[data-item="${a.item}"]`);
+          if (row) row.classList.add('highlight');
+        }
+      });
+    }
+  });
+});
+
+// === ROLES CARDS ===
+const rolesGrid = document.getElementById('roles-grid');
+const roleColors = {
+  'Gerente ABI CD':'#7c3aed',
+  'Supervisor ABI Safety':'#dc2626',
+  'Gerente CD LIS':'#8b5cf6',
+  'Líder Safety Nacional LIS':'#ef4444',
+  'Médico Laboral':'#0ea5e9',
+  'Líder SST LIS':'#f97316',
+  'Coordinador de reparto LIS':'#2563eb',
+  'Personal Brigadista':'#16a34a',
+  'Colaborador':'#ea580c',
+};
+
+const roleData = DATA.roles.map(role=>{
+  const counts = {R:0,A:0,C:0,I:0};
+  const acts = {R:[],A:[],C:[],I:[]};
+  DATA.actividades.forEach(a=>{
+    const v = a.roles[role];
+    if (v) {
+      counts[v]++;
+      acts[v].push({item:a.item, actividad:a.actividad});
+    }
+  });
+  return {role, counts, acts};
+});
+
+rolesGrid.innerHTML = roleData.map(rd=>{
+  const color = roleColors[rd.role] || '#737373';
+  const total = rd.counts.R + rd.counts.A + rd.counts.C + rd.counts.I;
+  const focusActs = [...rd.acts.A, ...rd.acts.R].slice(0,6);
+  return `
+    <div class="role-card" style="border-top-color:${color}">
+      <h4 style="--c:${color}"><span style="background:${color};width:10px;height:10px;border-radius:50%;display:inline-block"></span>${rd.role}</h4>
+      <div class="role-cargo">Participa en ${total} de ${DATA.actividades.length} actividades</div>
+      <div class="role-stats">
+        <div class="role-stat R"><div class="v">${rd.counts.R}</div><div class="l">R</div></div>
+        <div class="role-stat A"><div class="v">${rd.counts.A}</div><div class="l">A</div></div>
+        <div class="role-stat C"><div class="v">${rd.counts.C}</div><div class="l">C</div></div>
+        <div class="role-stat I"><div class="v">${rd.counts.I}</div><div class="l">I</div></div>
+      </div>
+      ${focusActs.length ? `
+        <div class="role-activities">
+          <div style="font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Dueño / Responsable de:</div>
+          <ul>
+            ${focusActs.map(a=>`<li><b>${a.item}.</b> ${a.actividad.length>55?a.actividad.substr(0,55)+'…':a.actividad}</li>`).join('')}
+          </ul>
+        </div>
+      ` : '<div class="role-activities" style="color:var(--muted);font-style:italic">Solo participa como Consultado o Informado</div>'}
+    </div>
+  `;
+}).join('');
+</script>
+</body>
+</html>
